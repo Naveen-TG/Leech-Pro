@@ -9,6 +9,7 @@ import time
 from pathlib import Path
 import aria2p
 import requests
+from pyrogram import enums 
 from tobrot import (
     DOWNLOAD_LOCATION,
     GLEECH_COMMAND,
