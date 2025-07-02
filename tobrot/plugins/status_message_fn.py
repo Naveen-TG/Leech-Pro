@@ -13,6 +13,7 @@ import traceback
 
 import psutil
 import math
+from pyrogram import enums
 from pyrogram.errors import FloodWait, MessageIdInvalid, MessageNotModified
 from tobrot.helper_funcs.admin_check import AdminCheck
 
@@ -125,7 +126,7 @@ async def status_message_f(
         else:
             if msg != prev_mess:
                 try:
-                    await to_edit.edit(msg, parse_mode="html")
+                    await to_edit.edit(msg, parse_mode=enums.ParseMode.HTML)
                 except MessageIdInvalid as df:
                     break
                 except MessageNotModified as ep:
