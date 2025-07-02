@@ -1,16 +1,15 @@
 FROM ubuntu:20.04
 
-# Set non-interactive mode and timezone
 ENV DEBIAN_FRONTEND=noninteractive
 ENV TZ=Asia/Kolkata
 
-# Create and set working directory
+# Create working directory
 RUN mkdir -p /app && chmod 777 /app
 WORKDIR /app
 
-# Update and install dependencies
-RUN apt-get update -qq && \
-    apt-get install -y -qq --no-install-recommends \
+# Fix apt IPv6/network issues and install packages
+RUN apt-get -o Acquire::ForceIPv4=true update -qq && \
+    apt-get -o Acquire::ForceIPv4=true install -y -qq --no-install-recommends \
         git \
         aria2 \
         wget \
@@ -39,13 +38,15 @@ RUN mkdir -p /app/gautam && \
     gunzip /app/gautam/gclone.gz && \
     chmod +x /app/gautam/gclone
 
-# Install Python requirements
+# Install Python dependencies
 COPY requirements.txt .
 RUN pip3 install --no-cache-dir -r requirements.txt
 
-# Copy project files and make extract script executable
+# Copy rest of the app
 COPY . .
-RUN chmod +x extract
 
-# Start script
+# Make start script executable
+RUN chmod +x start.sh
+
+# Start the bot
 CMD ["bash", "start.sh"]
